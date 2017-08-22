@@ -1,17 +1,19 @@
 const SAMPLE_FOLDER = "samples/";
 
 const program = {
-    "kick.wav": "1000",
-    "oh.wav":   "0010",
-    "ch.wav":   "1",
-    "tom.wav":  "10",
-    "snare.wav":"00001000",
-    "clap.wav": "00010100"
+    "kick.wav": ["0000","1000","1000","1111"],
+    "oh.wav":   ["0000","0010","1111","1111"],
+    "ch.wav":   ["0000","1010","0010","1111"],
+    "tom.wav":  ["0000","1010","0001","1111"],
+    "snare.wav":["0000","1001","00001000","1000"],
+    "clap.wav": ["0000","01010100","00010100","11011111"]
 }
+
+console.log(program)
 
 class Clock{
     constructor(sequencer){
-        this.tempo = 128;
+        this.tempo = 60 * 260 / 130;
         this.isPlaying = false;
         this.sequencer = sequencer;
         this.loop();
@@ -22,11 +24,7 @@ class Clock{
             if(this.isPlaying){
                 this.sequencer.next();
             }
-        }, this.calculateInterval())
-    }
-
-    calculateInterval(){
-        return 60 * 260 / this.tempo;
+        }, this.tempo)
     }
 
     start(){
@@ -40,21 +38,34 @@ class Clock{
 
 class Sequencer{
     constructor(){
-        this.patterns = [];
+        this.program = {};
+        this.samples = [];
         this.currentStepIndex = 0;
+        this.pattern = 1;
     }
 
     load(program){
-        for (var key in program) {
-            if (program.hasOwnProperty(key)) {
-                this.patterns.push(new Pattern(key,program[key]));
+        this.program = program;
+        this.loadPattern(this.pattern);
+    }
+
+    loadPattern(pattern){
+        this.pattern = pattern;
+        this.samples = [];
+        for (var layer in this.program) {
+            if (this.program.hasOwnProperty(layer)) {
+                this.loadLayer(layer,this.pattern);
             }
         }
     }
 
+    loadLayer(sampleFileName, pattern){
+        this.samples.push(new Pattern(sampleFileName,this.program[sampleFileName][pattern]));
+    }
+
     next(){
         this.currentStepIndex++;
-        this.patterns.forEach(x=>x.next());
+        this.samples.forEach(x=>x.next());
     }
 }
 
