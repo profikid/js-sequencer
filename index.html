@@ -5,7 +5,21 @@
 <body>
     <script type="text/javascript" src="index.js"></script>
     <h1>zweedse sequencer in 100 regels code</h1>
+    <p>What makes a drum machine sounds analoog?
+        most of it comes from inconsistencies in the clock. 
+        old machines have a single thread fighting for resources.
+        making these things less accurate and sound more 'analoog'
+
+        Javascript has a single thread of operation called the event loop.
+        That makes it suitable for this type of messy machine. 
+        It will sound different on every browser / every device.
+        But that is ok. We can 
+    </p>
     <button onclick="clock.start()">start</button>
     <button onclick="clock.stop()">stop</button>
+    <button onclick="seq.loadPattern(0)">0</button>
+    <button onclick="seq.loadPattern(1)">1</button>
+    <button onclick="seq.loadPattern(2)">2</button>
+    <button onclick="seq.loadPattern(3)">3</button>
 </body>
 </html>

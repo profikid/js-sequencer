@@ -2,14 +2,14 @@ const SAMPLE_FOLDER = "samples/";
 
 const program = {
     "kick.wav": ["0000","1000","1000","1111"],
-    "oh.wav":   ["0000","0010","1111","1111"],
+    "oh.wav":   ["0000","0010","0010","1111"],
     "ch.wav":   ["0000","1010","0010","1111"],
     "tom.wav":  ["0000","1010","0001","1111"],
     "snare.wav":["0000","1001","00001000","1000"],
     "clap.wav": ["0000","01010100","00010100","11011111"]
 }
 
-console.log(program)
+console.table(program)
 
 class Clock{
     constructor(sequencer){
@@ -57,6 +57,7 @@ class Sequencer{
                 this.loadLayer(layer,this.pattern);
             }
         }
+        console.table(seq.samples);
     }
 
     loadLayer(sampleFileName, pattern){
@@ -98,7 +99,7 @@ class Pattern{
 
 class Step{
     constructor(sample,playNote){
-        this.playNote = playNote;
+        this.playNote = playNote == "1" ? true: false;
         this.sample = sample;
     }
 
@@ -107,8 +108,10 @@ class Step{
            new Audio(this.sample).play();
         }
     }
+
 }
 
 seq = new Sequencer();
 seq.load(program);
 clock = new Clock(seq);
+
